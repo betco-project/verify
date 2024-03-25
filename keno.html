@@ -238,8 +238,8 @@
       } else if (version === 'v2') {
         $('#game_salt_input').val('0000000000000000000301e2801a9a9598bfb114e574a91a887f2132f33047e6');
       }
-      if ((/hash=/).test(hash_url)) {
-        var hash = hash_url.match(/hash=[0-9a-zA-z]+/)[0].replace(/hash=/, '');
+      if ((/s=/).test(hash_url)) {
+        var hash = hash_url.match(/s=[0-9a-zA-z]+/)[0].replace(/s=/, '');
         $('#game_hash_input').val(hash)
         $('#game_verify_submit').click()
       }
