@@ -13,6 +13,7 @@
   <script src="./lib/tools.js"></script>
   <script src="./lib/hooks.js"></script>
   <script src="./lib/babel.min.js"></script>
+  <script src="./lib/utils.js"></script>
 </head>
 <body>
   <div id="app"></div>
@@ -44,29 +45,12 @@
       );
     }
 
-    function getHashResultNumber (hashResult) {
-      let res = {dec: [], hex: []};
-      for (let i = 0; i < hashResult.length; i += 2) {
-        let dext = hashResult[i] + hashResult[i + 1]
-        let hext = parseInt(dext, 16)
-        res.dec.push(dext)  
-        res.hex.push(hext)
-      }
-      return res;
-    }
+    // function getHashResultNumber (hash) {
+    //   return Math.floor(slideWindowNumber(hash, 37));
+    // }
 
-    function getResult (resultList) {
-      const firstStep = resultList[0]/(Math.pow(256, 1));
-      const secondStep = resultList[1]/(Math.pow(256, 2));
-      const thirdStep = resultList[2]/(Math.pow(256, 3));
-      const fourthStep = resultList[3]/(Math.pow(256, 4));
-      const resultStep = (firstStep + secondStep + thirdStep + fourthStep) * 37;
-      const result = Math.floor(resultStep);
-      return {
-        clscList: [firstStep.toFixed(9), secondStep.toFixed(9), thirdStep.toFixed(9), fourthStep.toFixed(9)],
-        resultStep: resultStep.toFixed(9),
-        result
-      }
+    function getResult (hash) {
+      return Math.floor(slideWindowNumber(hash, 37));
     }
 
 
@@ -81,8 +65,8 @@
         const serverSeedHash = tools.sha256(state.serverSeed);
         const resultArr = [state.clientSeed, state.nonce];
         const hmacSha256Result = String(CryptoJS.HmacSHA256(resultArr.join(":"), state.serverSeed));
-        const resultList = getHashResultNumber(hmacSha256Result);
-        const finalResult = getResult(resultList.hex);
+        const finalResult = getResult(hmacSha256Result);
+
         return {
           serverSeedHash,
           hmacSha256Result,
@@ -104,29 +88,7 @@
           <h2 class="text-center">Output</h2>
           <form className="py-5">
             <Input placeholder="HmacSHA256(clientSeed, serverSeed)" readOnly value={result.hmacSha256Result} />
-            <Input placeholder="Result" readOnly value={result.finalResult.result} />
-            <h5 style={{marginTop: 20}}>Bytes to Number</h5>
-            <div>
-              <div>{`(${resultList.dec[0]}, ${resultList.dec[1]}, ${resultList.dec[2]}, ${resultList.dec[3]}) -> [0, ...4] = `}<span className="text-success">{finalResult.result}</span></div>
-              {resultList.dec.slice(0,4).map((item, index) => {
-                return (
-                  <div key={index.toString()}>
-                    <span style={{marginRight: index === 0 ? 20 : 10}}>{index === 0 ? "" : "+"}</span>
-                    <span style={{marginRight: 10}}>{finalResult.clscList[index]}</span>
-                    <span>{`( ${resultList.dec[index]} / ( 256 ^ 1 )`}</span>
-                  </div>
-                )
-              })}
-              <div>
-                <span style={{marginRight: 10}}>=</span>
-                <span style={{marginRight: 10}}>{finalResult.resultStep}</span>
-                <span>( * 37 )</span>
-              </div>
-              <div>
-                <span style={{marginRight: 10}}>=</span>
-                <span style={{marginRight: 10}} className="text-success">{finalResult.result}</span>
-              </div>
-            </div>
+            <Input placeholder="Result" readOnly value={result.finalResult} />
           </form>
         </div>
       );
