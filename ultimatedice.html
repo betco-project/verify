@@ -11,6 +11,7 @@
   <script src="./lib/vue.min.js"></script>
   <script src="./lib/crypto-js.js"></script>
   <script src="./lib/tools.js"></script>
+  <script src="./lib/utils.js"></script>
 </head>
 <body>
   
@@ -106,13 +107,9 @@ var app = new Vue({
       }
       return res
     },
+
     numResult () {
-      let num = 0
-      let list = this.results.hex
-      for (let i = 0; i < 4; i++) {
-        num += list[i] / Math.pow(256, (i + 1))
-      }
-      return num.toFixed(9)
+      return slideWindowNumber(this.result_hash_list, 10000) / 100;
     }
   },
   watch: {
