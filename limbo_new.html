@@ -78,10 +78,10 @@ var app = new Vue({
       seed = seed.slice(0, nBits / 4);
       const r = parseInt(seed, 16);
       let X = r / Math.pow(2, nBits);
-      X = (rtp % 100) / (1 - X);
+      X = Math.floor((this.rtp % 100) / (1 - X));
 
       const result = Math.floor(X);
-      return this.server_seed ? Math.max(1, result / 100) : '';
+      return this.server_seed ? Math.max(1, result) : '';
     }
   },
   watch: {
