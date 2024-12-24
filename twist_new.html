@@ -71,7 +71,7 @@
               <th>Purple gem</th>
               <th>Red gem</th>
               <th>Dark gem</th>
-              <th>Skeleton</th>
+              <th>Skull</th>
             </tr>
             <tr>
               <td v-for="(num, index) in layerInfo" :class="{'bg-success': index == luckyIndex}">{{ num[0] }}</td>
@@ -117,7 +117,7 @@
               <th>Purple gem</th>
               <th>Red gem</th>
               <th>Dark gem</th>
-              <th>Skeleton</th>
+              <th>Skull</th>
             </tr>
             <tr v-for="item in layerData" :key="item[0]">
               <td>{{ formatLayerString(item[0]) }}</td>
